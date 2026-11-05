@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Sixteen illustrated OCR GCSE Physics Higher Tier revision flashcards. Flip for answers, study individually, or view all cards together." />
+  <meta name="theme-color" content="#f8f8f2" />
+  <title>Physics Flipcards · GCSE Revision Lab</title>
+  <style>
+    :root {
+      --ink:#1e2935; --ink-muted:#60707c; --paper:#f8f8f2; --white:#fff;
+      --mint:#dcebd7; --peach:#fae4cf; --blue:#cfdef6; --line:#27333d;
+      --shadow:0 18px 56px rgba(26,46,56,.10); --radius:22px;
+    }
+    *,*::before,*::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    button { font:inherit; cursor:pointer; }
+    button:focus-visible,[role="button"]:focus-visible { outline:3px solid #3064ac; outline-offset:4px; }
+    button:disabled { cursor:default; opacity:.4; }
+    .shell { width:min(1320px,calc(100% - 48px)); margin:0 auto; }
+    .topbar { border-bottom:1px solid #e1e4da; background:rgba(255,255,255,.55); }
+    .topbar-inner { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:820; letter-spacing:-.02em; }
+    .brand-mark { display:grid; grid-template-columns:repeat(2,12px); gap:3px; transform:rotate(-8deg); }
+    .brand-mark span { width:12px; height:12px; border-radius:3px; border:1px solid var(--ink); }
+    .brand-mark span:nth-child(1){background:var(--peach)} .brand-mark span:nth-child(2){background:var(--mint)}
+    .brand-mark span:nth-child(3){background:var(--blue)} .brand-mark span:nth-child(4){background:#e8d5f1}
+    .topbar-note { color:var(--ink-muted); font-size:13px; font-weight:650; letter-spacing:.06em; text-transform:uppercase; }
+    .hero { padding:42px 0 27px; display:flex; align-items:flex-end; justify-content:space-between; gap:30px; }
+    .eyebrow { display:flex; align-items:center; gap:10px; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.15em; color:#536c62; }
+    .eyebrow::before { content:""; width:27px; height:2px; border-radius:3px; background:#7bb098; }
+    h1 { font-size:clamp(38px,5vw,68px); letter-spacing:-.065em; line-height:1.03; margin:14px 0 12px; max-width:800px; font-weight:850; }
+    .hero p { margin:0; max-width:620px; line-height:1.55; font-size:16px; color:#5e6f75; }
+    .hero-stats { display:flex; gap:22px; flex:none; padding:0 0 5px 0; }
+    .stat { min-width:97px; }
+    .stat strong { display:block; font-size:32px; line-height:1; letter-spacing:-.05em; }
+    .stat span { display:block; margin-top:7px; font-size:12px; font-weight:730; text-transform:uppercase; letter-spacing:.09em; color:#75808b; }
+    .control-panel { padding:15px; border:1px solid #e3e5df; background:#fff; box-shadow:0 6px 32px rgba(42,52,44,.035); border-radius:18px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+    .controls-left,.controls-right { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .mode-switch { display:flex; gap:5px; background:#f0f2ed; padding:5px; border-radius:13px; }
+    .mode-button { border:0; color:#66747b; background:transparent; border-radius:9px; padding:11px 18px; font-size:14px; font-weight:750; transition:.16s ease; }
+    .mode-button.active { color:var(--ink); background:#fff; box-shadow:0 3px 12px rgba(25,30,25,.11); }
+    .mode-button:hover:not(.active) { background:#e8ece5; }
+    .action-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid #d7ded8; border-radius:11px; padding:11px 14px; color:#43525d; background:#fff; font-size:14px; font-weight:750; transition:.15s ease; }
+    .action-button:hover { transform:translateY(-1px); border-color:#b6c4b9; background:#f7faf6; }
+    .action-button svg { width:16px; height:16px; }
+    .progress-area { display:flex; flex-direction:column; gap:8px; width:205px; }
+    .progress-copy { display:flex; align-items:center; justify-content:space-between; color:#66757b; font-size:12px; font-weight:770; }
+    .progress-track { width:100%; height:7px; border-radius:99px; background:#eaf0e9; overflow:hidden; }
+    .progress-fill { width:0%; height:100%; background:#76b497; border-radius:99px; transition:width .3s ease; }
+    main { padding-bottom:56px; }
+    .view { padding-top:26px; }
+    .view[hidden] { display:none !important; }
+    .study-layout { display:grid; grid-template-columns:minmax(0,1fr) 270px; gap:23px; align-items:stretch; }
+    .study-main { min-width:0; }
+    .above-card { display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; gap:16px; }
+    .subheading { margin:0; font-size:13px; font-weight:790; color:#6d7d81; text-transform:uppercase; letter-spacing:.12em; }
+    .index-label { color:#77868c; font-size:13px; font-weight:790; font-variant-numeric:tabular-nums; }
+    .flip-card { perspective:1300px; position:relative; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
+    .study-main .flip-card { height:420px; }
+    .flip-card-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .62s cubic-bezier(.18,.75,.2,1); }
+    .flip-card.is-flipped .flip-card-inner { transform:rotateY(180deg); }
+    .card-face { border:1.5px solid #42514c; position:absolute; inset:0; border-radius:var(--radius); backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; display:flex; flex-direction:column; }
+    .card-face::after { content:""; position:absolute; inset:10px; pointer-events:none; border:1px solid rgba(23,34,39,.065); border-radius:14px; }
+    .card-face.front { background:var(--tint); }
+    .card-face.back { background:#e8f1ec; transform:rotateY(180deg); }
+    .card-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12px; font-weight:840; letter-spacing:.10em; text-transform:uppercase; color:#43575a; }
+    .card-topic { background:rgba(255,255,255,.54); padding:7px 11px; border-radius:99px; }
+    .card-number { font-variant-numeric:tabular-nums; }
+    .study-main .card-face { padding:28px 31px; }
+    .study-main .card-question { position:relative; z-index:1; max-width:82%; font-size:clamp(30px,3.3vw,43px); line-height:1.17; letter-spacing:-.046em; margin:39px 0 12px; font-weight:780; }
+    .study-main .card-answer { position:relative; z-index:1; max-width:93%; font-size:clamp(27px,3vw,38px); line-height:1.23; letter-spacing:-.034em; margin:43px 0 12px; font-weight:740; }
+    .card-hint { position:absolute; left:31px; bottom:23px; color:#51616a; font-size:13px; font-weight:720; display:flex; align-items:center; gap:9px; }
+    .card-hint span { width:21px; height:21px; border:1px solid #6d8b84; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; }
+    .answer-label { display:inline-block; margin-top:21px; color:#42745f; font-size:12px; letter-spacing:.14em; font-weight:860; text-transform:uppercase; }
+    .art-slot { position:absolute; right:22px; bottom:28px; width:29%; height:43%; display:flex; justify-content:center; align-items:center; z-index:0; }
+    .art-slot svg { width:100%; height:100%; overflow:hidden; filter:drop-shadow(0 7px 3px rgba(44,44,44,.03)); }
+    .art-slot.no-art::after { content:"?"; font-size:178px; line-height:1; color:rgba(26,51,57,.10); font-weight:850; transform:rotate(11deg); }
+    .study-main .flip-card:hover .card-face { border-color:#284e4b; }
+    .study-nav { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:17px; }
+    .nav-btn { border:1px solid #d2dcd4; background:#fff; color:var(--ink); border-radius:12px; padding:13px 20px; font-size:14px; font-weight:790; display:inline-flex; align-items:center; gap:11px; }
+    .nav-btn:hover { background:#ecf3ee; }
+    .nav-primary { background:var(--ink); border-color:var(--ink); color:#fff; }
+    .nav-primary:hover { background:#31495a; }
+    .nav-center { color:#76868a; font-size:12px; font-weight:650; text-align:center; }
+    .side-panel { border-radius:20px; border:1px solid #e2e6df; background:#fff; padding:24px; min-height:100%; display:flex; flex-direction:column; justify-content:space-between; }
+    .side-panel .mini-heading { margin:0 0 15px; font-size:12px; font-weight:850; color:#85918e; letter-spacing:.11em; text-transform:uppercase; }
+    .side-panel h2 { font-size:22px; letter-spacing:-.045em; line-height:1.17; margin:0 0 11px; }
+    .side-panel p { margin:0; color:#718087; line-height:1.55; font-size:14px; }
+    .side-illustration { margin:22px auto; width:140px; height:115px; transform:rotate(-9deg); }
+    .side-illustration svg { width:100%; height:100%; }
+    .side-note { border-radius:13px; padding:13px; background:#f0f5f0; color:#596c64; font-size:12px; line-height:1.55; font-weight:650; }
+    .grid-toolbar { display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:17px; }
+    .grid-toolbar .desc { color:#728084; font-size:13px; margin:6px 0 0; }
+    .grid-board { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+    .grid-board .flip-card { min-height:250px; }
+    .grid-board .card-face { border-radius:16px; padding:18px; }
+    .grid-board .card-face::after { inset:6px; border-radius:11px; }
+    .grid-board .card-topic { padding:5px 9px; font-size:10px; }
+    .grid-board .card-meta { font-size:11px; }
+    .grid-board .card-question { position:relative; z-index:1; margin:22px 0 5px; font-size:clamp(15px,1.48vw,20px); font-weight:760; line-height:1.31; letter-spacing:-.028em; max-width:100%; }
+    .grid-board .card-answer { position:relative; z-index:1; margin:25px 0 4px; font-size:clamp(14px,1.35vw,18px); font-weight:730; line-height:1.34; letter-spacing:-.023em; }
+    .grid-board .card-hint { left:17px; bottom:13px; font-size:10px; gap:5px; }
+    .grid-board .card-hint span { width:16px; height:16px; font-size:10px; }
+    .grid-board .art-slot { bottom:16px; right:14px; width:35%; height:31%; opacity:.93; }
+    .grid-board .art-slot.no-art::after { font-size:100px; }
+    .grid-board .front.has-art .card-question { max-width:95%; }
+    .grid-board .answer-label { margin-top:17px; font-size:10px; }
+    .grid-board .card-face.back { background:#ebf1ed; }
+    .legend { display:flex; align-items:center; gap:16px; color:#7c8b8b; font-size:12px; font-weight:650; margin-top:22px; }
+    .legend-dot { display:inline-block; width:9px; height:9px; background:#78b399; border-radius:50%; vertical-align:middle; margin-right:6px; }
+    footer { border-top:1px solid #e1e6de; margin-top:52px; padding:18px 0 26px; color:#8a9696; font-size:12px; line-height:1.5; display:flex; align-items:center; justify-content:space-between; gap:15px; }
+    footer strong { color:#657675; }
+    dialog:modal { overscroll-behavior:contain; }
+    dialog::backdrop { overflow:hidden; overscroll-behavior:contain; background:rgba(24,35,42,.46); backdrop-filter:blur(3px); }
+    .eq-dialog { width:min(1080px,calc(100% - 32px)); max-height:calc(100dvh - 40px); margin:auto; padding:0; border:1.5px solid #42514c; border-radius:var(--radius); background:var(--paper); color:var(--ink); box-shadow:0 24px 68px rgba(18,32,38,.24); }
+    .eq-dialog-inner { display:flex; flex-direction:column; max-height:calc(100dvh - 43px); }
+    .eq-header { padding:20px 26px; background:#fff; border-bottom:1px solid #dde3dc; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:2; }
+    .eq-title-group { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .eq-title-group h2 { margin:0; font-size:clamp(22px,2.5vw,28px); letter-spacing:-.04em; font-weight:830; }
+    .eq-key { display:inline-flex; align-items:center; gap:8px; border:1.5px solid var(--ink); border-radius:10px; padding:6px 12px; background:var(--paper); font-size:12px; font-weight:750; color:var(--ink); }
+    .eq-ht { display:inline-flex; align-items:center; justify-content:center; padding:2px 7px; border-radius:6px; background:var(--peach); border:1px solid #cfa882; color:#5a391b; font-size:11px; font-weight:850; letter-spacing:.04em; flex:none; }
+    .eq-header-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .eq-body { padding:24px 26px 28px; overflow-y:auto; }
+    .eq-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; align-items:start; }
+    .eq-col { display:flex; flex-direction:column; gap:18px; }
+    .eq-topic-card { background:#fff; border:1px solid #dce2da; border-radius:16px; padding:18px 20px; box-shadow:0 4px 18px rgba(30,45,38,.03); }
+    .eq-topic-card h3 { margin:0 0 12px; font-size:15px; font-weight:830; letter-spacing:-.02em; color:var(--ink); display:flex; align-items:center; gap:8px; padding-bottom:9px; border-bottom:1px solid #edf1ec; }
+    .eq-topic-tag { display:inline-block; padding:3px 8px; border-radius:7px; background:var(--mint); font-size:12px; font-weight:850; color:#2b473a; }
+    .eq-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; }
+    .eq-item { display:flex; align-items:baseline; gap:9px; font-size:14px; line-height:1.45; color:#25333d; padding:6px 8px; border-radius:9px; background:#fafbf8; border:1px solid #eef1ec; }
+    .eq-formula { display:inline-flex; flex-wrap:wrap; align-items:center; gap:5px 6px; }
+    .eq-frac { display:inline-grid; grid-template-rows:auto auto; justify-items:center; vertical-align:middle; text-align:center; padding:0 4px; line-height:1.2; }
+    .eq-num { border-bottom:1.5px solid var(--ink); padding:0 4px 2px; width:100%; }
+    .eq-den { padding:2px 4px 0; width:100%; }
+    .eq-sheet-img-wrap { background:#fff; border:1px solid #dce2da; border-radius:16px; padding:14px; text-align:center; }
+    .eq-sheet-img { max-width:100%; height:auto; border-radius:8px; display:block; margin:0 auto; }
+    @media (max-width:1000px) {
+      .study-layout { grid-template-columns:minmax(0,1fr); }
+      .side-panel { display:none; }
+      .grid-board { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .hero-stats { display:none; }
+      .study-main .card-question { max-width:85%; }
+      .eq-columns { grid-template-columns:minmax(0,1fr); }
+    }
+    @media (max-width:740px) {
+      .shell { width:min(100% - 30px,1320px); }
+      .topbar-inner { min-height:61px; }
+      .topbar-note { font-size:10px; max-width:118px; text-align:right; }
+      .hero { padding:31px 0 25px; }
+      h1 { font-size:43px; }
+      .hero p { font-size:14px; }
+      .control-panel { align-items:stretch; }
+      .controls-left,.controls-right { width:100%; justify-content:space-between; }
+      .progress-area { flex:1; min-width:125px; }
+      .study-main .flip-card { height:395px; }
+      .study-main .card-face { padding:23px; }
+      .study-main .card-question { font-size:30px; margin-top:35px; max-width:96%; }
+      .study-main .card-answer { font-size:26px; max-width:96%; margin-top:38px; }
+      .study-main .art-slot { width:37%; height:32%; right:15px; bottom:24px; }
+      .study-main .art-slot.no-art::after { font-size:140px; }
+      .study-main .card-hint { left:23px; }
+      .grid-board { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .grid-board .flip-card { min-height:245px; }
+      .grid-board .card-question { font-size:16px; }
+      .grid-board .card-answer { font-size:15px; }
+      .nav-center { display:none; }
+      .study-nav .nav-btn { flex:1; justify-content:center; }
+      footer { flex-direction:column; align-items:flex-start; }
+      .eq-header { padding:16px 18px; }
+      .eq-body { padding:16px 18px 22px; }
+    }
+    @media (max-width:440px) {
+      .mode-button { padding:10px 12px; }
+      .action-button { font-size:13px; padding:10px 12px; }
+      .grid-board { grid-template-columns:1fr; }
+      .grid-board .flip-card { min-height:205px; }
+      .grid-board .card-question { font-size:20px; max-width:83%; }
+      .grid-board .card-answer { font-size:18px; }
+      .grid-board .art-slot { width:28%; height:43%; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand"><div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div><span>Revision Lab</span></div>
+      <div class="topbar-note">OCR Gateway · Physics Higher</div>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div>
+        <div class="eyebrow">Flashcard collection 01</div>
+        <h1 id="pageTitle">Physics, flipped<span style="color:#86b5a0">.</span></h1>
+        <p>Sixteen exam-style questions. Think it through, flip for the answer, or put every card on the table at once.</p>
+      </div>
+      <div class="hero-stats" aria-hidden="true">
+        <div class="stat"><strong>16</strong><span>Flashcards</span></div>
+        <div class="stat"><strong>2</strong><span>Study modes</span></div>
+      </div>
+    </section>
+
+    <section class="control-panel" aria-label="Flashcard controls">
+      <div class="controls-left">
+        <div class="mode-switch" role="group" aria-label="Display mode">
+          <button id="singleMode" class="mode-button active" aria-pressed="true" type="button">One at a time</button>
+          <button id="allMode" class="mode-button" aria-pressed="false" type="button">Show all 16</button>
+        </div>
+        <button id="shuffleBtn" class="action-button" type="button" title="Shuffle card order">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3c5 0 5 10 10 10h3"/><path d="m17 14 3 3-3 3"/><path d="M4 17h3c1.6 0 2.8-1 3.8-2.4M14.1 9.4C15 8 15.8 7 17 7h3"/><path d="m17 4 3 3-3 3"/></svg>
+          Shuffle
+        </button>
+        <button id="equationsBtn" class="action-button" type="button" commandfor="equationsDialog" command="show-modal" title="Display OCR GCSE Physics equations sheet">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h8"/><path d="M8 9h2"/></svg>
+          Equations sheet
+        </button>
+      </div>
+      <div class="controls-right">
+        <div class="progress-area" role="status" aria-live="polite">
+          <div class="progress-copy"><span>Answers viewed</span><span id="progressCount">0 / 16</span></div>
+          <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+        </div>
+        <button id="resetBtn" class="action-button" type="button">Start over</button>
+      </div>
+    </section>
+
+    <section id="studyView" class="view" aria-label="Single flashcard study mode">
+      <div class="study-layout">
+        <div class="study-main">
+          <div class="above-card"><h2 class="subheading">Your next question</h2><div id="cardIndex" class="index-label">01 / 16</div></div>
+          <div id="singleCardMount"></div>
+          <div class="study-nav">
+            <button id="previousBtn" class="nav-btn" type="button"><span aria-hidden="true">←</span> Previous</button>
+            <span class="nav-center">Tip: use ← and → to navigate</span>
+            <button id="nextBtn" class="nav-btn nav-primary" type="button">Next card <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <aside class="side-panel" aria-label="Study tips">
+          <div>
+            <p class="mini-heading">How to use</p>
+            <h2>Try before<br/>you flip.</h2>
+            <p>Say your answer aloud or jot it down. Then reveal the back of the card to check how you did.</p>
+            <div class="side-illustration" aria-hidden="true">
+              <svg viewBox="0 0 270 278"><image href="assets/physics-doodles.png" width="1524" height="1082"/></svg>
+            </div>
+          </div>
+          <div class="side-note">Teacher tip: switch to <strong>Show all 16</strong> for a full-class retrieval starter or self-marking activity.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="gridView" class="view" aria-label="All flashcards" hidden>
+      <div class="grid-toolbar">
+        <div><h2 class="subheading">The full deck · 16 cards</h2><p class="desc">Select any card to reveal its answer.</p></div>
+        <button id="revealAllBtn" class="action-button" type="button">Reveal all answers</button>
+      </div>
+      <div id="gridMount" class="grid-board"></div>
+      <div class="legend"><span><span class="legend-dot"></span>Click or press Enter to flip a card</span><span>Each card flips independently</span></div>
+    </section>
+  </main>
+  <footer class="shell">
+    <span><strong>Revision Lab</strong> · Adapted practice questions based on OCR J250/11 Physics (Higher), June 2024</span>
+    <span>Original hand-drawn diagrams supplied by the teacher</span>
+  </footer>
+
+  <dialog id="equationsDialog" class="eq-dialog" closedby="any" aria-labelledby="equationsTitle">
+    <div class="eq-dialog-inner">
+      <header class="eq-header">
+        <div class="eq-title-group">
+          <h2 id="equationsTitle">Equations in physics</h2>
+          <div class="eq-key"><span>Key:</span> <span class="eq-ht">HT</span> <span>= Higher Tier only</span></div>
+        </div>
+        <div class="eq-header-actions">
+          <div class="mode-switch" role="group" aria-label="Equations sheet format">
+            <button id="eqFormattedBtn" class="mode-button active" aria-pressed="true" type="button">Formatted</button>
+            <button id="eqImageBtn" class="mode-button" aria-pressed="false" type="button">Original sheet</button>
+          </div>
+          <button id="closeEquationsBtn" class="action-button" type="button" commandfor="equationsDialog" command="close" autofocus>
+            Close <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+      </header>
+      <div class="eq-body">
+        <div id="eqFormattedView" class="eq-columns">
+          <div class="eq-col">
+            <section class="eq-topic-card" aria-labelledby="eq-p1">
+              <h3 id="eq-p1"><span class="eq-topic-tag">P1</span> Matter</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">density = <span class="eq-frac"><span class="eq-num">mass</span><span class="eq-den">volume</span></span></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">change in thermal energy = mass × specific heat capacity × change in temperature</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">thermal energy for a change in state = mass × specific latent heat</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="eq-topic-card" aria-labelledby="eq-p2">
+              <h3 id="eq-p2"><span class="eq-topic-tag">P2</span> Forces</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">distance travelled = speed × time</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">acceleration = <span class="eq-frac"><span class="eq-num">change in velocity</span><span class="eq-den">time</span></span></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">(final velocity)<sup>2</sup> − (initial velocity)<sup>2</sup> = 2 × acceleration × distance</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">kinetic energy = 0.5 × mass × (speed)<sup>2</sup></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">force = mass × acceleration</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-ht" title="Higher Tier only">HT</span>
+                  <span class="eq-formula">momentum = mass × velocity</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">work done = force × distance (along the line of action of the force)</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">power = <span class="eq-frac"><span class="eq-num">work done</span><span class="eq-den">time</span></span></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">force exerted by a spring = extension × spring constant</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">energy transferred in stretching = 0.5 × spring constant × (extension)<sup>2</sup></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">gravitational force = mass × gravitational field strength, <em>g</em></span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">(in a gravitational field) potential energy = mass × height × gravitational field strength, <em>g</em></span>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="eq-col">
+            <section class="eq-topic-card" aria-labelledby="eq-p3">
+              <h3 id="eq-p3"><span class="eq-topic-tag">P3</span> Electricity</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">charge flow = current × time</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">potential difference = current × resistance</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">energy transferred = charge × potential difference</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">power = potential difference × current</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">power = (current)<sup>2</sup> × resistance</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-formula">energy transferred = power × time</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="eq-topic-card" aria-labelledby="eq-p4">
+              <h3 id="eq-p4"><span class="eq-topic-tag">P4</span> Magnetism and magnetic fields</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-ht" title="Higher Tier only">HT</span>
+                  <span class="eq-formula">force on a conductor (at right angles to a magnetic field) carrying a current = magnetic flux density × current × length</span>
+                </li>
+                <li class="eq-item">
+                  <span class="eq-ht" title="Higher Tier only">HT</span>
+                  <span class="eq-formula"><span class="eq-frac"><span class="eq-num">potential difference across primary coil</span><span class="eq-den">potential difference across secondary coil</span></span> = <span class="eq-frac"><span class="eq-num">number of turns in primary coil</span><span class="eq-den">number of turns in secondary coil</span></span></span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="eq-topic-card" aria-labelledby="eq-p5">
+              <h3 id="eq-p5"><span class="eq-topic-tag">P5</span> Waves in matter</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">wave speed = frequency × wavelength</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="eq-topic-card" aria-labelledby="eq-p7">
+              <h3 id="eq-p7"><span class="eq-topic-tag">P7</span> Energy</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">efficiency = <span class="eq-frac"><span class="eq-num">useful output energy transfer</span><span class="eq-den">input energy transfer</span></span></span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="eq-topic-card" aria-labelledby="eq-p8">
+              <h3 id="eq-p8"><span class="eq-topic-tag">P8</span> Global challenges</h3>
+              <ul class="eq-list">
+                <li class="eq-item">
+                  <span class="eq-formula">potential difference across primary coil × current in primary coil = potential difference across secondary coil × current in secondary coil</span>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div id="eqImageView" class="eq-sheet-img-wrap" hidden>
+          <img src="assets/equations-sheet.jpg" alt="OCR GCSE Physics Equations in physics sheet showing P1 Matter, P2 Forces, P3 Electricity, P4 Magnetism and magnetic fields, P5 Waves in matter, P7 Energy, and P8 Global challenges" class="eq-sheet-img" width="1024" height="549" />
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    "use strict";
+    const CARDS = [
+      {id:1,topic:"Foundations",tint:"peach",q:"State one difference between a scalar and a vector quantity.",a:"A scalar has magnitude only. A vector has both magnitude and direction."},
+      {id:2,topic:"Electricity",tint:"peach",q:"An object becomes positively charged when rubbed. Explain how this happens.",a:"Electrons transfer from the object to the cloth, leaving the object positively charged."},
+      {id:3,topic:"Forces",tint:"mint",q:"An astronaut is on the Moon. What happens to their mass and weight compared with Earth?",a:"Mass is unchanged. Weight is smaller because the Moon's gravitational field is weaker."},
+      {id:4,topic:"Forces",tint:"mint",q:"Why does a rocket accelerate when the resultant force on it is not zero?",a:"An unbalanced resultant force causes acceleration, as described by Newton's second law.",art:[1013,277,1166,488]},
+      {id:5,topic:"Forces",tint:"mint",q:"At terminal velocity, how does air resistance compare with a skydiver's weight?",a:"Air resistance equals the skydiver's weight. The resultant force is zero.",art:[289,300,476,468]},
+      {id:6,topic:"Particles",tint:"mint",q:"A sealed container of air is cooled. What happens to particle speed and pressure?",a:"Particles move more slowly and collide less energetically with the walls. The gas pressure decreases.",art:[506,11,700,249]},
+      {id:7,topic:"Forces",tint:"mint",q:"A car has mass 2000 kg and velocity 10 m/s. Calculate its momentum.",a:"Momentum = mass × velocity = 2000 × 10 = 20,000 kg m/s.",art:[1240,91,1522,244]},
+      {id:8,topic:"Forces",tint:"mint",q:"A spring has k = 20 N/m. Calculate its extension when pulled with 6 N.",a:"Extension = force ÷ spring constant = 6 ÷ 20 = 0.30 m.",art:[329,458,447,654]},
+      {id:9,topic:"Energy",tint:"blue",q:"A 200 N push moves a sofa 3 m. Calculate the work done.",a:"Work done = force × distance = 200 × 3 = 600 J.",art:[0,521,264,650]},
+      {id:10,topic:"Energy",tint:"mint",q:"A student does 36,000 J of work in 240 s. Calculate power in kW.",a:"Power = work ÷ time = 36,000 ÷ 240 = 150 W = 0.15 kW."},
+      {id:11,topic:"Forces",tint:"mint",q:"On a velocity–time graph, what does a horizontal line mean?",a:"Constant velocity and zero acceleration. A horizontal line above zero shows a constant, nonzero velocity.",art:[0,300,245,491]},
+      {id:12,topic:"Electricity",tint:"mint",q:"How must an ammeter and a voltmeter be connected in a circuit?",a:"An ammeter is connected in series. A voltmeter is connected in parallel across the component.",art:[1240,481,1433,657]},
+      {id:13,topic:"Thermal physics",tint:"mint",q:"State the equation for change in thermal energy when temperature changes.",a:"Change in thermal energy = mass × specific heat capacity × temperature change (ΔE = mcΔθ).",art:[291,61,480,248]},
+      {id:14,topic:"Thermal physics",tint:"mint",q:"What is meant by specific latent heat?",a:"The energy required to change the state of 1 kg of a substance without a temperature change.",art:[0,11,270,289]},
+      {id:15,topic:"Magnetism",tint:"mint",q:"Explain why iron nails can form a chain when lifted by an electromagnet.",a:"The electromagnet magnetises the first iron nail; that nail becomes a magnet and attracts the next one.",art:[1215,677,1455,854]},
+      {id:16,topic:"Magnetism",tint:"blue",q:"What happens to a current-carrying wire in a magnetic field?",a:"It experiences a force perpendicular to both the current and the magnetic field. This is the motor effect.",art:[320,891,596,1078]}
+    ];
+    const colours = {peach:"#fae4cf",mint:"#dcebd7",blue:"#cfdef6"};
+    let order = CARDS.map(c=>c.id);
+    let index = 0;
+    let mode = "single";
+    const flipped = new Set();
+    const viewed = new Set();
+    const byId = new Map(CARDS.map(c=>[c.id,c]));
+    const $ = id => document.getElementById(id);
+
+    function escapeHTML(s) {
+      return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function artwork(card) {
+      if(!card.art) return '<div class="art-slot no-art" aria-hidden="true"></div>';
+      const [x1,y1,x2,y2] = card.art;
+      return `<div class="art-slot" aria-hidden="true"><svg viewBox="${x1} ${y1} ${x2-x1} ${y2-y1}" preserveAspectRatio="xMidYMid meet"><image href="assets/physics-doodles.png" width="1524" height="1082"/></svg></div>`;
+    }
+    function cardElement(card) {
+      const isFlipped = flipped.has(card.id);
+      const el = document.createElement("div");
+      el.className = `flip-card${isFlipped ? " is-flipped" : ""}`;
+      el.tabIndex = 0;
+      el.setAttribute("role","button");
+      el.setAttribute("aria-pressed",String(isFlipped));
+      el.setAttribute("aria-label",`${card.id} of 16. ${isFlipped ? "Answer: " + card.a : "Question: " + card.q}. Press Enter to flip.`);
+      el.style.setProperty("--tint",colours[card.tint]);
+      el.dataset.id = card.id;
+      el.innerHTML = `<div class="flip-card-inner">
+        <div class="card-face front ${card.art ? "has-art" : ""}" aria-hidden="${isFlipped}">
+          <div class="card-meta"><span class="card-topic">${escapeHTML(card.topic)}</span><span class="card-number">${String(card.id).padStart(2,"0")} / 16</span></div>
+          <div class="card-question">${escapeHTML(card.q)}</div>
+          ${artwork(card)}
+          <div class="card-hint"><span aria-hidden="true">↻</span> Flip to reveal answer</div>
+        </div>
+        <div class="card-face back" aria-hidden="${!isFlipped}">
+          <div class="card-meta"><span class="card-topic">${escapeHTML(card.topic)}</span><span class="card-number">${String(card.id).padStart(2,"0")} / 16</span></div>
+          <span class="answer-label">The answer</span>
+          <div class="card-answer">${escapeHTML(card.a)}</div>
+          <div class="card-hint"><span aria-hidden="true">↻</span> Flip back to question</div>
+        </div>
+      </div>`;
+      const flip = () => {
+        if(flipped.has(card.id)) flipped.delete(card.id);
+        else {flipped.add(card.id);viewed.add(card.id);}
+        el.classList.toggle("is-flipped",flipped.has(card.id));
+        const newFlip = flipped.has(card.id);
+        el.setAttribute("aria-pressed",String(newFlip));
+        el.setAttribute("aria-label",`${card.id} of 16. ${newFlip ? "Answer: " + card.a : "Question: " + card.q}. Press Enter to flip.`);
+        el.querySelector(".front").setAttribute("aria-hidden",String(newFlip));
+        el.querySelector(".back").setAttribute("aria-hidden",String(!newFlip));
+        updateProgress();updateRevealAllButton();
+      };
+      el.addEventListener("click",flip);
+      el.addEventListener("keydown",e=>{
+        if(e.key==="Enter" || e.key===" "){e.preventDefault();flip();}
+      });
+      return el;
+    }
+    function updateProgress() {
+      $("progressCount").textContent=`${viewed.size} / 16`;
+      $("progressFill").style.width=`${(viewed.size/16)*100}%`;
+    }
+    function renderSingle() {
+      const card=byId.get(order[index]);
+      $("cardIndex").textContent=`${String(index+1).padStart(2,"0")} / 16`;
+      const mount=$("singleCardMount");mount.replaceChildren(cardElement(card));
+      $("previousBtn").disabled=index===0;
+      $("nextBtn").textContent="";
+      if(index===order.length-1) $("nextBtn").innerHTML='Back to first <span aria-hidden="true">↺</span>';
+      else $("nextBtn").innerHTML='Next card <span aria-hidden="true">→</span>';
+    }
+    function renderGrid() {
+      const frag=document.createDocumentFragment();
+      for(const id of order) frag.appendChild(cardElement(byId.get(id)));
+      $("gridMount").replaceChildren(frag);
+      updateRevealAllButton();
+    }
+    function updateRevealAllButton() {
+      const all=order.every(id=>flipped.has(id));
+      $("revealAllBtn").textContent=all ? "Show all questions" : "Reveal all answers";
+    }
+    function setMode(value) {
+      mode=value;
+      $("studyView").hidden=value!=="single";
+      $("gridView").hidden=value!=="grid";
+      $("singleMode").classList.toggle("active",value==="single");
+      $("allMode").classList.toggle("active",value==="grid");
+      $("singleMode").setAttribute("aria-pressed",String(value==="single"));
+      $("allMode").setAttribute("aria-pressed",String(value==="grid"));
+      if(value==="single") renderSingle(); else renderGrid();
+    }
+    function navigate(delta) {
+      index=(index+delta+order.length)%order.length;
+      // Questions are hidden on arrival, so each visit can be tested afresh.
+      flipped.delete(order[index]);
+      renderSingle();
+    }
+    function reset() {
+      order=CARDS.map(c=>c.id);index=0;flipped.clear();viewed.clear();
+      updateProgress();setMode(mode);
+    }
+    function shuffle() {
+      order=order.slice();
+      for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+      index=0;flipped.clear();viewed.clear();updateProgress();setMode(mode);
+    }
+    $("singleMode").addEventListener("click",()=>setMode("single"));
+    $("allMode").addEventListener("click",()=>setMode("grid"));
+    $("previousBtn").addEventListener("click",()=>navigate(-1));
+    $("nextBtn").addEventListener("click",()=>navigate(1));
+    $("resetBtn").addEventListener("click",reset);
+    $("shuffleBtn").addEventListener("click",shuffle);
+    $("revealAllBtn").addEventListener("click",()=>{
+      const all=order.every(id=>flipped.has(id));
+      if(all) flipped.clear();
+      else {for(const id of order){flipped.add(id);viewed.add(id);}}
+      updateProgress();renderGrid();
+    });
+    function setEquationsFormat(format) {
+      const isFormatted = format === "formatted";
+      $("eqFormattedView").hidden = !isFormatted;
+      $("eqImageView").hidden = isFormatted;
+      $("eqFormattedBtn").classList.toggle("active", isFormatted);
+      $("eqImageBtn").classList.toggle("active", !isFormatted);
+      $("eqFormattedBtn").setAttribute("aria-pressed", String(isFormatted));
+      $("eqImageBtn").setAttribute("aria-pressed", String(!isFormatted));
+    }
+    $("eqFormattedBtn").addEventListener("click", () => setEquationsFormat("formatted"));
+    $("eqImageBtn").addEventListener("click", () => setEquationsFormat("image"));
+
+    if (!("commandForElement" in HTMLButtonElement.prototype)) {
+      document.addEventListener("click", (event) => {
+        const button = event.composedPath().find((el) => el.matches?.("button[commandfor]"));
+        if (!button) return;
+        const target = $(button.getAttribute("commandfor"));
+        const command = button.getAttribute("command");
+        if (!target || !command) return;
+        if (command === "show-modal" && typeof target.showModal === "function") target.showModal();
+        else if (command === "close" && typeof target.close === "function") target.close();
+      });
+    }
+
+    if (!("closedBy" in HTMLDialogElement.prototype)) {
+      const eqDialog = $("equationsDialog");
+      eqDialog.addEventListener("click", (event) => {
+        if (event.target !== eqDialog) return;
+        const rect = eqDialog.getBoundingClientRect();
+        const isDialogContent =
+          rect.top <= event.clientY &&
+          event.clientY <= rect.top + rect.height &&
+          rect.left <= event.clientX &&
+          event.clientX <= rect.left + rect.width;
+        if (isDialogContent) return;
+        eqDialog.close();
+      });
+    }
+
+    document.addEventListener("keydown",e=>{
+      if($("equationsDialog").open || mode!=="single" || e.altKey||e.ctrlKey||e.metaKey) return;
+      if(e.key==="ArrowRight"){e.preventDefault();navigate(1);}
+      if(e.key==="ArrowLeft"){e.preventDefault();if(index>0)navigate(-1);}
+    });
+    updateProgress();setMode("single");
+  </script>
+</body>
+</html>
